@@ -1,0 +1,21 @@
+[project]
+name = "IPySCF"
+version = "0.0.1"
+authors = [
+    {name="Hiqmet Kamberaj", email="h.kamberaj@gmail.com"},
+]
+[build-system]
+description = "Interactive Quantum Mechanics Simulations with PySCF"
+readme = "README.md"
+license = { file = "LICENSE"  }
+requires-python = ">=3.8"
+classifiers = [
+"Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License",
+"Operating System :: OS Independent ",
+]
+[project.urls]
+"Homepagwe" = "https://hkamberaj.github.com/IPySCF/V1.00"
+"Bug Tracker" = "https://hkamberaj.github.com/IPySCF/V1.00/bugs"
+
+
+
