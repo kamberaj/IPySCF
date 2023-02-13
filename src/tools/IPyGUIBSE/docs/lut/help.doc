@@ -1,0 +1,116 @@
+Help on module basis_set_exchange.lut in basis_set_exchange:
+
+NAME
+    basis_set_exchange.lut
+
+DESCRIPTION
+    Functions for looking up element names, numbers, and symbols
+    and for converting between angular momentum conventions
+    
+    This module has functions for looking up element information by
+    symbol, name, or number. It also has functions for converting
+    angular momentum between integers (0, 1, 2) and letters (s, p, d).
+
+FUNCTIONS
+    all_element_names()
+        Obtain a list of the names of all the elements
+    
+    amchar_to_int(amchar, hij=False)
+        Convert an angular momentum integer to a character
+        
+        The return value is a list of integers (to handle sp, spd, ... orbitals)
+        
+        For example, converts 'p' to [1] and 'sp' to [0,1]
+        
+        If hij is True, the ordering spdfghijkl is used. Otherwise, the
+        ordering will be spdfghikl (skipping j)
+    
+    amint_to_char(am, hij=False, use_L=False)
+        Convert an angular momentum integer to a character
+        
+        The input is a list (to handle sp, spd, ... orbitals). The return
+        value is a string
+        
+        For example, converts [0] to 's' and [0,1,2] to 'spd'
+        
+        If hij is True, the ordering spdfghijkl is used. Otherwise, the
+        ordering will be spdfghikl (skipping j)
+        
+        If use_L is True, sp shells ([0,1]) will return l instead
+    
+    electron_shells_start(nelectrons, max_am=20)
+        Return the starting principle quantum numbers of electron shells
+        
+        For example, an ECP covering 10 electrons will covers 1s, 2s, 2p shells. The
+        electrons shells will then start at 3s, 3p, 3d, and 4f (returned as [3, 3, 3, 4])
+        
+        If an ECP covers 30 electrons, then the shells will start at [5, 4, 4, 4]
+        
+        Only fully-covered shells are counted. If a shell is partly covered, an exception
+        is raised.
+        
+        The returned list is extended up to max_am.
+        
+        Note: Since the main use of this is for ECPs, we only cover what can really be found
+        on the periodic table. No excited states!
+        
+        Parameters
+        ----------
+        nelectrons : int
+            Number of electrons covered by an ECP
+        max_am : int
+            Fill out the starting principal quantum numbers up to this am
+        
+        Returns
+        -------
+        list
+            The starting principal quantum numbers of s, p, d, and f shells.
+    
+    element_Z_from_name(name, as_str=False)
+        Obtain an element's Z number given its name
+        
+        If as_str is True, then a string is returned (ie, '1' for Hydrogen)
+        
+        An exception is thrown if the name is not found
+    
+    element_Z_from_sym(sym, as_str=False)
+        Obtain an element's Z-number given its symbol
+        
+        If as_str is True, then a string is returned (ie, '1' for Hydrogen)
+        
+        An exception is thrown if the symbol is not found
+    
+    element_data_from_Z(Z)
+        Obtain elemental data given a Z number
+        
+        An exception is thrown if the Z number is not found
+    
+    element_data_from_name(name)
+        Obtain elemental data given an elemental name
+        
+        The given name is not case sensitive
+        
+        An exception is thrown if the name is not found
+    
+    element_data_from_sym(sym)
+        Obtain elemental data given an elemental symbol
+        
+        The given symbol is not case sensitive
+        
+        An exception is thrown if the symbol is not found
+    
+    element_name_from_Z(Z, normalize=False)
+        Obtain an element's name from its Z number
+        
+        An exception is thrown if the Z number is not found
+        
+        If normalize is True, the first letter will be capitalized
+    
+    element_sym_from_Z(Z, normalize=False)
+        Obtain an element's symbol from its Z number
+        
+        An exception is thrown if the Z number is not found
+        
+        If normalize is True, the first letter will be capitalized
+    
+    function_type_from_am(shell_am, base_type, spherical_type)

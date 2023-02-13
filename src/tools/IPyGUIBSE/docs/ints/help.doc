@@ -1,0 +1,37 @@
+Help on module basis_set_exchange.ints in basis_set_exchange:
+
+NAME
+    basis_set_exchange.ints - One-center integrals for Gaussian-type and Slater-type orbitals
+
+DESCRIPTION
+    Written by Susi Lehtola, 2020
+
+FUNCTIONS
+    gamma(x, /)
+        Gamma function at x.
+    
+    gto_R_contr(exps0, contr0, l)
+        Computes the r matrix in the contracted basis, assuming the basis
+        functions are of the spherical form r^l \sum_i c_i exp(-z_i r^2).
+        The function also takes care of proper normalization.
+    
+    gto_Rsq_contr(exps0, contr0, l)
+        Computes the r^2 matrix in the contracted basis, assuming the basis
+        functions are of the spherical form r^l \sum_i c_i exp(-z_i r^2).
+        The function also takes care of proper normalization.
+    
+    gto_overlap_contr(exps0, contr0, l)
+        Computes the overlap matrix in the contracted basis, assuming the
+        basis functions are of the spherical form r^l \sum_i c_i exp(-z_i
+        r^2).
+    
+    sqrt(x, /)
+        Return the square root of x.
+    
+    sto_Rsq_contr(exps0, contr0, ns0)
+        Computes the r^2 matrix in the contracted basis, assuming the basis
+        functions are of the spherical form r^(n-1) exp(-z r).
+    
+    sto_overlap_contr(exps0, contr0, ns0)
+        Computes the overlap matrix in the contracted basis, assuming the
+        basis functions are of the spherical form r^(n-1) exp(-z r).

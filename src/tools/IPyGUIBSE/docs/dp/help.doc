@@ -1,0 +1,507 @@
+Help on package daltonproject:
+
+NAME
+    daltonproject - Dalton Project is a platform for molecular- and electronic-structure simulations of complex systems.
+
+PACKAGE CONTENTS
+    basis
+    dalton (package)
+    environment
+    lsdalton (package)
+    mol_reader
+    molecule
+    natural_occupation
+    program
+    property
+    pyframe_ifc (package)
+    qcmethod
+    spectrum
+    symmetry
+    utilities
+    vibrational_analysis
+
+CLASSES
+    builtins.object
+        daltonproject.basis.Basis
+        daltonproject.molecule.Molecule
+        daltonproject.program.ComputeSettings
+        daltonproject.property.Property
+        daltonproject.qcmethod.QCMethod
+    
+    class Basis(builtins.object)
+     |  Basis(basis: Union[Dict[str, str], str], ri: Union[Dict[str, str], str, NoneType] = None, admm: Union[Dict[str, str], str, NoneType] = None) -> None
+     |  
+     |  Specify the AO basis.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, basis: Union[Dict[str, str], str], ri: Union[Dict[str, str], str, NoneType] = None, admm: Union[Dict[str, str], str, NoneType] = None) -> None
+     |      Initialize Basis instance.
+     |      
+     |      Args:
+     |          basis: Basis set for molecule. Basis can be a string, if the same basis set
+     |              should be applied to all atoms. Basis can be a dict of the type
+     |              {atom_name: basis} if different basis sets are to be used for
+     |              different atoms.
+     |          ri: Auxiliary basis set for RI (optional). Follows the same format as basis.
+     |          admm: Auxiliary basis set for ADMM (optional). Follows the same format as basis.
+     |  
+     |  write(self, basis_format: str = 'dalton') -> None
+     |      Write basis set to file.
+     |      
+     |      Args:
+     |          basis_format: Format of the basis set file.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class ComputeSettings(builtins.object)
+     |  ComputeSettings(work_dir: Union[str, NoneType] = None, scratch_dir: Union[str, NoneType] = None, node_list: Union[List[str], NoneType] = None, jobs_per_node: Union[int, NoneType] = None, mpi_command: Union[str, NoneType] = None, mpi_num_procs: Union[int, NoneType] = None, omp_num_threads: Union[int, NoneType] = None, memory: Union[int, NoneType] = None, comm_port: Union[int, NoneType] = None, launcher: Union[str, NoneType] = None) -> None
+     |  
+     |  Compute settings to be used by Program.compute() implementations.
+     |  
+     |  The settings can be given as arguments during initialization. Defaults are
+     |  used for any missing argument(s).
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, work_dir: Union[str, NoneType] = None, scratch_dir: Union[str, NoneType] = None, node_list: Union[List[str], NoneType] = None, jobs_per_node: Union[int, NoneType] = None, mpi_command: Union[str, NoneType] = None, mpi_num_procs: Union[int, NoneType] = None, omp_num_threads: Union[int, NoneType] = None, memory: Union[int, NoneType] = None, comm_port: Union[int, NoneType] = None, launcher: Union[str, NoneType] = None) -> None
+     |      Initialize ComputeSettings.
+     |      
+     |      Args:
+     |          work_dir: Work directory in which the input and output files are
+     |              written. Default is to use current working directory.
+     |          scratch_dir: Scratch directory used by the programs for temporary
+     |              storage. Default is to first check environment variable
+     |              DALTON_TMPDIR, then SCRATCH, and lastly to use the system's
+     |              temporary directory as returned by the tempfile module.
+     |          node_list: List of nodes. Defaults to nodes defined by PBS/Torque or
+     |              SLURM schedulers or the current host.
+     |          jobs_per_node: Number of concurrent jobs per node. Only used for
+     |              job farming, i.e., for running several jobs concurrently.
+     |              Default is one job per node.
+     |          mpi_command: MPI command including options. Must end with the
+     |              option that specifies number of processes. Default is to first
+     |              check the DP_MPI_COMMAND environment variable and otherwise it
+     |              is set to 'mpirun -np'.
+     |          mpi_num_procs: Number of MPI processes. Defaults to the value of
+     |              SLURM_NTASKS (if defined) or to one MPI process per NUMA node.
+     |          omp_num_threads: Number of OpenMP threads per process. Defaults to
+     |              the value of OMP_NUM_THREADS, SLURM_CPUS_PER_TASK, or the
+     |              number of physical cores divided by the number of MPI
+     |              processes.
+     |          memory: Total amount of memory in MB per node. Defaults to all
+     |              available memory minus 200 MB used for overhead.
+     |          comm_port: Port used for communication between nodes. Only used for
+     |              job farming.
+     |          launcher: Launcher that will be used to launch programs. Note that
+     |              specifying it will override mpi_command, mpi_num_procs, and
+     |              omp_num_threads. However, it will not override any launcher
+     |              environment variables that are specific to a program, e.g.,
+     |              DALTON_LAUNCHER for Dalton and LSDALTON_LAUNCHER for LSDalton.
+     |  
+     |  __repr__(self)
+     |      Return a printable representation of ComputeSettings instance.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Readonly properties defined here:
+     |  
+     |  num_nodes
+     |      Return the number of nodes.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+     |  
+     |  comm_port
+     |      Return communication port.
+     |  
+     |  jobs_per_node
+     |      Return the number of jobs per node.
+     |  
+     |  launcher
+     |      Return launcher command.
+     |  
+     |  memory
+     |      Return the total amount of memory in MB per node.
+     |  
+     |  mpi_command
+     |      Return MPI command.
+     |  
+     |  mpi_num_procs
+     |      Return the number of MPI processes.
+     |  
+     |  node_list
+     |      Return the list of nodes.
+     |  
+     |  omp_num_threads
+     |      Return the number of OpenMP threads (per MPI process).
+     |  
+     |  scratch_dir
+     |      Return scratch directory.
+     |  
+     |  work_dir
+     |      Return work directory.
+    
+    class Molecule(builtins.object)
+     |  Molecule(atoms: Union[str, NoneType] = None, input_file: Union[str, NoneType] = None, charge: int = 0, symmetry: bool = False) -> None
+     |  
+     |  Molecule class.
+     |  
+     |  Methods defined here:
+     |  
+     |  __add__(self, other: object) -> object
+     |      Add two Molecule instances.
+     |  
+     |  __init__(self, atoms: Union[str, NoneType] = None, input_file: Union[str, NoneType] = None, charge: int = 0, symmetry: bool = False) -> None
+     |      Initialize Molecule instance.
+     |      
+     |      Args:
+     |          atoms: Atoms specified with elements and coordinates (and optionally labels).
+     |          charge: Total charge of molecule.
+     |          input_file: Input file containing atoms and coordinates (and optionally labels).
+     |          symmetry: Use symmetry detection.
+     |  
+     |  __repr__(self)
+     |      Return a printable representation of the Molecule instance.
+     |  
+     |  analyze_symmetry(self) -> None
+     |      Analyze the molecular symmetry. Note that this translates the molecule's center of mass to the origin.
+     |  
+     |  atoms(self, atoms: str) -> None
+     |      Specify atoms.
+     |      
+     |      Args:
+     |          atoms: Atoms specified with elements and coordinates (and optionally labels).
+     |  
+     |  mol(self, filename: str) -> None
+     |      Read dalton mol file.
+     |      
+     |      Args:
+     |          filename: Name of mol file containing charge, atoms, and coordinates.
+     |  
+     |  xyz(self, filename: str) -> None
+     |      Read xyz file.
+     |      
+     |      Args:
+     |          filename: Name of xyz file containing atoms and coordinates.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Readonly properties defined here:
+     |  
+     |  num_atoms
+     |      Return the number of atoms in the molecule.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+     |  
+     |  coordinates
+     |      Atomic coordinates.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data and other attributes defined here:
+     |  
+     |  supported_filetypes = ('.xyz', '.mol')
+    
+    class Property(builtins.object)
+     |  Property(energy: bool = False, dipole: bool = False, polarizability: bool = False, first_hyperpolarizability: bool = False, gradients: Union[bool, dict] = False, hessian: Union[bool, dict] = False, geometry_optimization: Union[bool, dict] = False, transition_state: Union[bool, dict] = False, excitation_energies: Union[bool, dict] = False, two_photon_absorption: Union[bool, dict] = False, hyperfine_couplings: Union[dict, NoneType] = None, nmr_shieldings: bool = False, dipole_gradients: bool = False, polarizability_gradients: Union[bool, dict] = False) -> None
+     |  
+     |  Define properties to be computed.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, energy: bool = False, dipole: bool = False, polarizability: bool = False, first_hyperpolarizability: bool = False, gradients: Union[bool, dict] = False, hessian: Union[bool, dict] = False, geometry_optimization: Union[bool, dict] = False, transition_state: Union[bool, dict] = False, excitation_energies: Union[bool, dict] = False, two_photon_absorption: Union[bool, dict] = False, hyperfine_couplings: Union[dict, NoneType] = None, nmr_shieldings: bool = False, dipole_gradients: bool = False, polarizability_gradients: Union[bool, dict] = False) -> None
+     |      Initialize Property instance.
+     |      
+     |      Args:
+     |          energy: Calculate energy.
+     |          dipole: Calculate dipole moment.
+     |          polarizability: Calculate polarizability.
+     |          first_hyperpolarizability: Calculate first hyperpolarizability.
+     |          gradients: Calculate molecular gradients.
+     |          hessian: Activate molecular Hessian.
+     |          geometry_optimization: Perform geometry optimization.
+     |          transition_state: Perform geometry optimization for saddle points.
+     |          excitation_energies: Calculate excitation energies.
+     |          two_photon_absorption: Calculate two-photon absorption.
+     |          hyperfine_couplings: Calculate hyperfine couplings.
+     |          nmr_shieldings: Calculate nuclear magnetic shielding constants.
+     |          dipole_gradients: Calculate dipole gradients.
+     |          polarizability_gradients: Calculate polarizability gradients.
+     |  
+     |  __repr__(self)
+     |      Return a printable representation of Property instance.
+     |  
+     |  dipole(self) -> None
+     |      Dipole moment.
+     |  
+     |  dipole_gradients(self) -> None
+     |      Compute gradients of the dipole with respect to nuclear displacements in Cartesian coordinates.
+     |  
+     |  energy(self) -> None
+     |      Energy.
+     |  
+     |  excitation_energies(self, states: Union[int, List[int]] = 5, triplet: bool = False, cvseparation: Union[List[int], List[List[int]], NoneType] = None) -> None
+     |      Compute excitation energies.
+     |      
+     |      Args:
+     |          states: Number of states.
+     |          triplet: Turns on triplet excitations. Excitations are singlet as
+     |              default.
+     |          cvseparation: Core-valence separation. Specify the active orbitals
+     |              of each symmetry species (irrep), giving the number of the
+     |              orbitals. For example, [[1, 2], [1], [0]] specifies that
+     |              orbitals 1 and 2 from the first irrep are active, orbital 1
+     |              from the second irrep, and no orbitals from the third and last
+     |              irrep.
+     |  
+     |  first_hyperpolarizability(self) -> None
+     |      First hyperpolarizability (beta).
+     |  
+     |  geometry_optimization(self, method: str = 'BFGS') -> None
+     |      Geometry optimization.
+     |      
+     |      Args:
+     |          method: Geometry optimization method.
+     |  
+     |  gradients(self, method: str = 'analytic') -> None
+     |      Compute molecular gradients.
+     |      
+     |      Args:
+     |          method: Method for computing gradients.
+     |  
+     |  hessian(self, method: str = 'analytic') -> None
+     |      Compute molecular Hessian.
+     |      
+     |      Args:
+     |          method: Method for computing Hessian.
+     |  
+     |  hyperfine_couplings(self, atoms: List[int]) -> None
+     |      Compute hyperfine coupling constants.
+     |      
+     |      Args:
+     |          atoms: List of atoms by index.
+     |  
+     |  nmr_shieldings(self) -> None
+     |      Compute nuclear magnetic shielding constants.
+     |  
+     |  polarizability(self) -> None
+     |      Polarizability (alpha).
+     |  
+     |  polarizability_gradients(self, frequencies: Union[float, List[float]] = 0.0) -> None
+     |      Compute gradients of the polarizability with respect to nuclear displacements in Cartesian coordinates.
+     |      
+     |      Args:
+     |          frequencies: Frequencies at which the polarizability will be evaluated (hartree).
+     |  
+     |  transition_state(self) -> None
+     |      Geometry optimization for transition states.
+     |  
+     |  two_photon_absorption(self, states: Union[int, List[int]] = 5) -> None
+     |      Compute two-photon absorption strengths.
+     |      
+     |      Args:
+     |          states: Number of states.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class QCMethod(builtins.object)
+     |  QCMethod(qc_method: str, xc_functional: Union[str, NoneType] = None, exchange: Union[str, NoneType] = None, coulomb: Union[str, NoneType] = None, scf_threshold: Union[float, NoneType] = None, integral_family: Union[bool, NoneType] = None, exact_exchange: Union[float, NoneType] = None, environment: Union[str, NoneType] = None) -> None
+     |  
+     |  Specifies the QC method, including all associated settings.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, qc_method: str, xc_functional: Union[str, NoneType] = None, exchange: Union[str, NoneType] = None, coulomb: Union[str, NoneType] = None, scf_threshold: Union[float, NoneType] = None, integral_family: Union[bool, NoneType] = None, exact_exchange: Union[float, NoneType] = None, environment: Union[str, NoneType] = None) -> None
+     |      Initialize QCMethod instance.
+     |      
+     |      Args:
+     |          qc_method: Name of quantum chemistry method.
+     |          xc_functional: Name of exchange-correlation functional.
+     |          exchange: Name of approximation to use for the exchange contribution.
+     |          coulomb: Name of approximation to use for the Coulomb contribution.
+     |          scf_threshold: SCF convergence threshold.
+     |          integral_family: Specify if internal integral intermediates should be reused for family basis sets.
+     |          exact_exchange: Amount of exact exchange used in DFT calculations.
+     |          environment: Name of the environment model.
+     |  
+     |  __repr__(self)
+     |      Return a printable representation of QCMethod instance.
+     |  
+     |  complete_active_space(self, num_active_electrons: int, num_cas_orbitals: Union[List[int], int], num_inactive_orbitals: Union[List[int], int]) -> None
+     |      Specify complete active space.
+     |      
+     |      Args:
+     |          num_active_electrons: Number of active electrons.
+     |                                // Maybe this should be inferred just from the num_inactive_orbitals?
+     |          num_cas_orbitals: List of number of orbitals in complete active space.
+     |          num_inactive_orbitals: List of number of inactive (doubly occupied) orbitals.
+     |  
+     |  coulomb(self, coulomb: str) -> None
+     |      Specify name of Coulomb approximation.
+     |      
+     |      Args:
+     |          coulomb: Name of approximation to use for the Coulomb contribution.
+     |  
+     |  environment(self, environment)
+     |      Specify the environment model.
+     |      
+     |      Args:
+     |          environment: Name of the environment model.
+     |  
+     |  exact_exchange(self, exact_exchange: float) -> None
+     |      Specify amount of Hartree-Fock-like exchange in DFT calculation.
+     |      
+     |      Args:
+     |          exact_exchange: Coefficient specifying amount of Hartree-Fock-like exchange,
+     |              where 0.0 is only DFT exchange and 1.0 is only Hartree-Fock-like exchange.
+     |  
+     |  exchange(self, exchange: str) -> None
+     |      Specify name of exchange approximation.
+     |      
+     |      Args:
+     |          exchange: Name of approximation to use for the exchange contribution.
+     |  
+     |  input_orbital_coefficients(self, orbitals: Union[numpy.ndarray, Dict[int, numpy.ndarray]]) -> None
+     |      Specify starting guess for orbitals.
+     |      
+     |      Args:
+     |          orbitals: Orbital coefficients.
+     |  
+     |  integral_family(self, integral_family: bool) -> None
+     |      Specify if internal integral intermediates should be reused for integral_family basis sets.
+     |      
+     |      Args:
+     |          integral_family: Reuse internal integral intermediates for shared-exponent angular blocks.
+     |  
+     |  qc_method(self, qc_method: str) -> None
+     |      Specify quantum chemistry method.
+     |      
+     |      Args:
+     |          qc_method: Name of quantum chemical method.
+     |  
+     |  range_separation_parameter(self, mu: float) -> None
+     |      Specify value of range separation parameter.
+     |      
+     |      The range separation parameter is used in srDFT.
+     |      
+     |      Args:
+     |          mu: Range separation parameter in unit of a.u.^-1.
+     |  
+     |  scf_threshold(self, threshold: float) -> None
+     |      Specify convergence threshold for SCF calculations.
+     |      
+     |      Args:
+     |          threshold: Threshold for SCF convergence in Hartree.
+     |  
+     |  target_state(self, state: int, symmetry: int = 1) -> None
+     |      Specify target state for state-specific calculations.
+     |      
+     |      Args:
+     |          state: Which state to be targeted, counting from 1.
+     |          symmetry: Symmetry of the target state.
+     |  
+     |  xc_functional(self, xc_functional: str) -> None
+     |      Specify exchange-correlation functional to use with DFT methods.
+     |      
+     |      Args:
+     |          xc_functional: Name of exchange-correlation functional.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+FUNCTIONS
+    compute_ir_intensities(dipole_gradients: numpy.ndarray, transformation_matrix: numpy.ndarray, is_linear: bool = False) -> numpy.ndarray
+        Compute infrared molar decadic absorption coefficient in m^2 / (s * mol).
+        
+        Args:
+            dipole_gradients: Gradients of the dipole moment (au) with respect to
+                nuclear displacements in Cartesian coordinates.
+            transformation_matrix: Transformation matrix to convert from Cartesian
+                to normal coordinates.
+            is_linear: Indicate if the molecule is linear.
+        
+        Returns:
+            IR intensities in m^2 / (s * mol).
+    
+    compute_raman_intensities(polarizability_gradients: numpy.ndarray, polarizability_frequency: float, vibrational_frequencies: numpy.ndarray, transformation_matrix: numpy.ndarray, is_linear: bool = False) -> numpy.ndarray
+        Compute Raman differential scattering cross-section in C^4 * s^2 / (J * m^2 * kg).
+        
+        Args:
+            polarizability_gradients: Gradients of the polarizability with respect
+                to nuclear displacements in Cartesian coordinates.
+            polarizability_frequency: Frequency of the incident light in au.
+            vibrational_frequencies: Vibrational frequencies in cm^-1.
+            transformation_matrix: Transformation matrix to convert from Cartesian
+                to normal coordinates.
+            is_linear: Indicate if the molecule is linear.
+        
+        Returns:
+            Raman intensities in C^4 * s^2 / (J * m^2 * kg).
+    
+    mol_reader(filename: str) -> Tuple[daltonproject.molecule.Molecule, daltonproject.basis.Basis]
+        Read Dalton molecule input file.
+        
+        Args:
+            filename: Name of Dalton molecule input file containing atoms and coordinates.
+        
+        Returns:
+            Molecule and Basis objects.
+    
+    vibrational_analysis(molecule: daltonproject.molecule.Molecule, hessian: numpy.ndarray, dipole_gradients: Union[numpy.ndarray, NoneType] = None, polarizability_gradients: Union[daltonproject.program.PolarizabilityGradients, NoneType] = None) -> daltonproject.vibrational_analysis.VibrationalAnalysis
+        Perform vibrational analysis.
+        
+        Args:
+            molecule: Molecule object.
+            hessian: Second derivatives with respect to nuclear displacements in
+                Cartesian coordinates.
+            dipole_gradients: Gradient of the dipole moment with respect to nuclear
+                displacements in Cartesian coordinates.
+            polarizability_gradients: Gradient of the polarizability with respect to
+                nuclear displacements in Cartesian coordinates.
+        
+        Returns:
+            Harmonic vibrational frequencies (cm^-1). Optionally, IR intensities
+            (m^2 / (s * mol)), Raman intensities (C^4 * s^2 / (J * m^2 * kg)), and
+            transformation matrix.
+
+DATA
+    __all__ = ('Molecule', 'Basis', 'QCMethod', 'Property', 'ComputeSettin...
+    __copyright__ = 'Copyright (C)  The Dalton Project Developers'
+    __license__ = 'GPLv3+'
+
+VERSION
+    0.1a0
+
+AUTHOR
+    The Dalton Project Developers

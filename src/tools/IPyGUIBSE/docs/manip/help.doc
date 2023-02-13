@@ -1,0 +1,196 @@
+Help on module basis_set_exchange.manip in basis_set_exchange:
+
+NAME
+    basis_set_exchange.manip - Common basis set manipulations
+
+DESCRIPTION
+    This module contains functions for uncontracting and merging basis set
+    data, as well as some other small functions.
+
+FUNCTIONS
+    autoabs_basis(basis, lmaxinc=1, fsam=1.5)
+        Create a Coulomb fitting basis set for the given orbital basis set.
+        
+        .. seealso :: | R. Yang, A. P. Rendell, and M. J. Frisch
+                      | 'Automatically generated Coulomb fitting basis sets:
+                      | Design and accuracy for systems containing H to Kr'
+                      | J. Chem. Phys. 127, 074102 (2007)
+                      | http://doi.org/10.1063/1.2752807
+        
+        Parameters
+        ----------
+        basis : dict
+            Orbital basis set dictionary for which to generate the auxiliary basis
+    
+    autoaux_basis(basis)
+        Create an auxiliary basis set for the given orbital basis set for
+        use with the resolution of the identity approximation. This is a
+        simplified version of the routine where the electrons potentially
+        contained in the ECP are disregarded, leading to slightly larger (but
+        more accurate) auxiliary sets.
+        
+            .. seealso :: | G. L. Stoychev, A. A. Auer, and F. Neese
+                          | 'Automatic Generation of Auxiliary Basis Sets'
+                          | J. Chem. Theory Comput. 13, 554 (2017)
+                          | http://doi.org/10.1021/acs.jctc.6b01041
+        
+        
+            Parameters
+            ----------
+            basis : dict
+                Orbital basis set dictionary for which to generate the auxiliary basis
+    
+    create_element_data(bs_data, element_Z, key, key_exist_ok=False, element_exist_ok=True, create=<class 'list'>)
+        Creates an element and a subkey of the element in bs_data
+        
+        Note that bs_data is modified!
+    
+    exp(x, /)
+        Return e raised to the power of x.
+    
+    gamma(x, /)
+        Gamma function at x.
+    
+    geometric_augmentation(basis, nadd, use_copy=True, as_component=False, steep=False)
+        Extends a basis set by adding extrapolated diffuse or steep functions.
+        
+        For augmented Dunning sets (aug), the diffuse augmentation
+        corresponds to multiple augmentation (aug -> daug, taug, ...).
+        
+        In order for the augmentation to make sense, the two outermost
+        primitives have to be free i.e. uncontracted.
+        
+        Parameters
+        ----------
+        basis : dict
+            Basis set dictionary to work with
+        nadd: int
+            Number of functions to add (must be >=1). For diffuse augmentation on an augmented set: 1 -> daug, 2 -> taug, etc
+        use_copy: bool
+            If True, the input basis set is not modified.
+        steep: bool
+            If True, the augmentation is done for steep functions instead of diffuse functions.
+    
+    log(...)
+        log(x, [base=math.e])
+        Return the logarithm of x to the given base.
+        
+        If the base not specified, returns the natural logarithm (base e) of x.
+    
+    make_general(basis, skip_spdf=False, use_copy=True)
+        Makes one large general contraction for each angular momentum
+        
+        If use_copy is True, the input basis set is not modified.
+        
+        The output of this function is not pretty. If you want to make it nicer,
+        use sort_basis afterwards.
+    
+    merge_element_data(dest, sources, use_copy=True)
+        Merges the basis set data for an element from multiple sources
+        into dest.
+        
+        The destination is not modified, and a (shallow) copy of dest is returned
+        with the data from sources added.
+        
+        If use_copy is True, then the data merged into dest will be a (deep)
+        copy of that found in sources. Otherwise, data may be shared between dest
+        and sources
+    
+    optimize_general(basis, use_copy=True)
+        Optimizes the general contraction using the method of Hashimoto et al
+        
+        .. seealso :: | T. Hashimoto, K. Hirao, H. Tatewaki
+                      | 'Comment on Dunning's correlation-consistent basis set'
+                      | Chemical Physics Letters v243, Issues 1-2, pp, 190-192 (1995)
+                      | https://doi.org/10.1016/0009-2614(95)00807-G
+    
+    prune_basis(basis, use_copy=True)
+        Removes primitives that have a zero coefficient, and
+        removes duplicate primitives and shells
+        
+        This only finds EXACT duplicates, and is meant to be used
+        after other manipulations
+        
+        If use_copy is True, the input basis set is not modified.
+    
+    prune_shell(shell, use_copy=True)
+        Removes exact duplicates of primitives, and condenses duplicate exponents
+        into general contractions
+        
+        Also removes primitives if all coefficients are zero
+    
+    remove_free_primitives(basis, use_copy=True)
+        Removes any free primitives from a basis set as a way to generate a minimal basis
+        
+        The input basis set is not modified. The returned basis
+        may have functions with coefficients of zero and may have duplicate
+        shells.
+        
+        If use_copy is True, the input basis set is not modified.
+    
+    remove_primitive(electron_shell, idx_to_remove)
+        Removes a primitive (by index) of a electron_shell
+        
+        The electron_shell passed in is modified
+    
+    truhlar_calendarize(basis, month, use_copy=True)
+        Create the truhlar "month" basis sets from the corresponding aug basis set
+        
+        In Papajak 2011, removal of diffuse function stopped before removal of s and p functions.
+        This, conceivably, extends to d functions for transition metals.
+        However, you can keep extending to further in the year by removing these functions,
+        although it may affect stability. This is implemented in Gaussian with the t(month)
+        basis sets - tjul, tjun, etc. The 'tmonth' and regular 'month' basis sets are equivalent
+        until the 'maug' basis set is reached (containg no diffuse functions on H,He, s,p,d on transition
+        metals, and s, p on other elements).
+        
+        Since the regular 'month' basis sets are equivalent until maug, we do not adopt the
+        t(month) nomenclature. Instead, you can just go further backwards through the months
+        until you run out of diffuse functions or run out of months.
+        
+        Parameters
+        ----------
+        basis : dict
+            Basis set dictionary to work with
+        month: str
+            Month to create ('apr', 'jul', etc). Not case sensitive
+        use_copy: bool
+            If True, the input basis set is not modified.
+    
+    uncontract_general(basis, use_copy=True)
+        Removes the general contractions from a basis set
+        
+        The input basis set is not modified. The returned basis
+        may have functions with coefficients of zero and may have duplicate
+        shells.
+        
+        If use_copy is True, the input basis set is not modified.
+    
+    uncontract_segmented(basis, use_copy=True)
+        Removes the segmented contractions from a basis set
+        
+        This implicitly removes general contractions as well,
+        but will leave sp, spd, ... orbitals alone
+        
+        The input basis set is not modified. The returned basis
+        may have functions with coefficients of zero and may have duplicate
+        shells.
+        
+        If use_copy is True, the input basis set is not modified.
+    
+    uncontract_spdf(basis, max_am=0, use_copy=True)
+        Removes sp, spd, spdf, etc, contractions from a basis set
+        
+        The general contractions are replaced by uncontracted versions
+        
+        Contractions up to max_am will be left in place. For example,
+        if max_am = 1, spd will be split into sp and d
+        
+        The input basis set is not modified. The returned basis
+        may have functions with coefficients of zero and may have duplicate
+        shells.
+        
+        If use_copy is True, the input basis set is not modified.
+
+DATA
+    pi = 3.141592653589793

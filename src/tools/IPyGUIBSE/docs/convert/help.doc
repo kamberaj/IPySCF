@@ -1,0 +1,43 @@
+Help on module basis_set_exchange.convert in basis_set_exchange:
+
+NAME
+    basis_set_exchange.convert - Functions for basis set conversion
+
+FUNCTIONS
+    convert_formatted_basis_file(file_path_in, file_path_out, in_fmt=None, out_fmt=None, encoding='utf-8-sig')
+        Convert a formatted basis set file to another format
+        
+        Parameters
+        ----------
+        file_path_in : str
+            Path to the file to be read
+        file_path_out : str
+            Path to the file to be written.
+        in_fmt : str
+            The format of the basis to be read. If None, it is detected from the file name
+        out_fmt : str
+            The format of the basis to be written. If None, it is detected from the file name
+        encoding : str
+            The encoding of the input file
+        
+        Returns
+        -------
+        str
+            The basis set as a str with the new format
+    
+    convert_formatted_basis_str(basis_in, in_fmt, out_fmt)
+        Convert a formatted basis set to another format
+        
+        Parameters
+        ----------
+        basis_in : str
+            String representing the formatted input basis set input
+        in_fmt : str
+            The format of the basis set stored in basis_in
+        out_fmt : str
+            The desired output format
+        
+        Returns
+        -------
+        str
+            The basis set as a str with the new format

@@ -1,0 +1,75 @@
+Help on package pyscf:
+
+NAME
+    pyscf
+
+DESCRIPTION
+    *****************************************************
+    PySCF Python-based simulations of chemistry framework
+    *****************************************************
+    
+    How to use
+    ----------
+    There are two ways to access the documentation: the docstrings come with
+    the code, and an online program reference, available from
+    http://www.sunqm.net/pyscf/index.html
+    
+    We recommend the enhanced Python interpreter `IPython <http://ipython.org>`_
+    and the web-based Python IDE `Ipython notebook <http://ipython.org/notebook.html>`_
+    to try out the package::
+    
+        >>> from pyscf import gto, scf
+        >>> mol = gto.M(atom='H 0 0 0; H 0 0 1.2', basis='cc-pvdz')
+        >>> mol.apply(scf.RHF).run()
+        converged SCF energy = -1.06111199785749
+        -1.06111199786
+
+PACKAGE CONTENTS
+    __all__
+    __config__
+    adc (package)
+    agf2 (package)
+    ao2mo (package)
+    cc (package)
+    ci (package)
+    data (package)
+    df (package)
+    dft (package)
+    eph (package)
+    fci (package)
+    geomopt (package)
+    grad (package)
+    gto (package)
+    gw (package)
+    hessian (package)
+    lib (package)
+    lo (package)
+    mcscf (package)
+    md (package)
+    mp (package)
+    mrpt (package)
+    pbc (package)
+    post_scf
+    qmmm (package)
+    scf (package)
+    semiempirical (package)
+    sgx (package)
+    solvent (package)
+    soscf (package)
+    symm (package)
+    tddft (package)
+    tdscf (package)
+    tools (package)
+    x2c (package)
+
+FUNCTIONS
+    M(**kwargs)
+        Main driver to create Molecule object (mol) or Material crystal object (cell)
+
+DATA
+    DEBUG = False
+    PYSCF_EXT_PATH = None
+    __warningregistry__ = {'version': 112}
+
+VERSION
+    2.1.0

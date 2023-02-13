@@ -1,0 +1,13 @@
+,2zapa-nr,2zapa-nr-cv
+display_name,2ZaPa-NR,2ZaPa-NR-CV
+other_names,[],[]
+description,Double Zeta augmented + polarization (nonrelativistic),Double zeta augmented +polarization (nonrelativistic + core-valence)
+latest_version,1,1
+tags,[],[]
+basename,2ZaPa-NR,2ZaPa-NR-CV
+relpath,,
+family,ranasinghe,ranasinghe
+role,orbital,orbital
+function_types,"['gto', 'gto_spherical']","['gto', 'gto_spherical']"
+auxiliaries,{},{}
+versions,"{'0': {'file_relpath': '2ZaPa-NR.0.table.json', 'revdesc': 'Data from the original Basis Set Exchange', 'revdate': '2016-07-11', 'elements': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18']}, '1': {'file_relpath': '2ZaPa-NR.1.table.json', 'revdesc': 'Data from Supplemental Information of publications', 'revdate': '2019-06-10', 'elements': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18']}}","{'0': {'file_relpath': '2ZaPa-NR-CV.0.table.json', 'revdesc': 'Data from the original Basis Set Exchange', 'revdate': '2017-10-11', 'elements': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18']}, '1': {'file_relpath': '2ZaPa-NR-CV.1.table.json', 'revdesc': 'Data from Supplemental Information of publications (modified)', 'revdate': '2019-06-11', 'elements': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18']}}"

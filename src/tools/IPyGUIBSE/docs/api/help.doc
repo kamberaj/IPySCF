@@ -1,0 +1,242 @@
+Help on module basis_set_exchange.api in basis_set_exchange:
+
+NAME
+    basis_set_exchange.api - Main interface to Basis Set Exchange internal basis sets
+
+DESCRIPTION
+    This module contains the interface for getting basis set data
+    and references from the internal data store of basis sets. As much
+    as possible, this is being kept separate from the typical reading/writing
+    functionality of the library.
+
+FUNCTIONS
+    filter_basis_sets(substr=None, family=None, role=None, elements=None, data_dir=None)
+        Filter basis sets by some criteria
+        
+        All parameters are ANDed together and are not case sensitive.
+        
+        Parameters
+        ----------
+        substr : str
+            Substring to search for in the basis set name
+        family : str
+            Family the basis set belongs to
+        role : str
+            Role of the basis set
+        elements : str or list
+            List of elements that the basis set must include.
+            Elements can be specified by Z-number (int or str) or by symbol (str).
+            If this argument is a str (ie, '1-3,7-10'), it is expanded into a list.
+            Z numbers and symbols (case insensitive) can be used interchangeably
+            (see :func:`basis_set_exchange.misc.expand_elements`)
+        data_dir : str
+            Data directory with all the basis set information. By default,
+            it is in the 'data' subdirectory of this project.
+        
+        Returns
+        -------
+        dict
+            Basis set metadata that matches the search criteria
+    
+    fix_data_dir(data_dir)
+        If data_dir is None, returns the default data_dir. Otherwise,
+        returns the data_dir parameter unmodified
+    
+    get_all_basis_names(data_dir=None)
+        Obtain a list of all basis set names
+        
+        The returned list is the internal representation of the basis set name.
+        
+        The data is read from the METADATA.json file in the data directory.
+        
+        Parameters
+        ----------
+        data_dir : str
+            Data directory with all the basis set information. By default,
+            it is in the 'data' subdirectory of this project.
+    
+    get_basis(name, elements=None, version=None, fmt=None, uncontract_general=False, uncontract_spdf=False, uncontract_segmented=False, remove_free_primitives=False, make_general=False, optimize_general=False, augment_diffuse=0, augment_steep=0, get_aux=0, data_dir=None, header=True)
+        Obtain a basis set
+        
+        This is the main function for getting basis set information.
+        This function reads in all the basis data and returns it either
+        as a string or as a python dictionary.
+        
+        Parameters
+        ----------
+        name : str
+            Name of the basis set. This is not case sensitive.
+        elements : str or list
+            List of elements that you want the basis set for.
+            Elements can be specified by Z-number (int or str) or by symbol (str).
+            If this argument is a str (ie, '1-3,7-10'), it is expanded into a list.
+            Z numbers and symbols (case insensitive) can be used interchangeably
+            (see :func:`basis_set_exchange.misc.expand_elements`)
+        
+            If an empty string or list is passed, or if None is passed (the default),
+            all elements for which the basis set is defined are included.
+        version : int or str
+            Obtain a specific version of this basis set. By default,
+            the latest version is returned.
+        fmt: str
+            The desired output format of the basis set. By default,
+            basis set information is returned as a python dictionary. Otherwise,
+            if a format is specified, a string is returned.
+            Use :func:`basis_set_exchange.api.get_formats` to programmatically obtain the available
+            formats.  The `fmt` argument is not case sensitive.
+        
+            Available formats are
+        
+                * bdf
+                * gamess_us
+                * gaussian94
+                * json
+                * nwchem
+                * psi4
+                * turbomole
+        
+        uncontract_general : bool
+            If True, remove general contractions by duplicating the set
+            of primitive exponents with each vector of coefficients.
+            Primitives with zero coefficient are removed, as are duplicate shells.
+        uncontract_spdf : bool
+            If True, remove general contractions with combined angular momentum (sp, spd, etc)
+            by duplicating the set of primitive exponents with each vector of coefficients.
+            Primitives with zero coefficient are removed, as are duplicate shells.
+        uncontract_segmented : bool
+            If True, remove segmented contractions by duplicating each primitive into new shells.
+            Each coefficient is set to 1.0
+        make_general : bool
+            If True, make the basis set as generally-contracted as possible. There will be one
+            shell per angular momentum (for each element)
+        optimize_general : bool
+            Optimize by removing general contractions that contain uncontracted
+            functions (see :func:`basis_set_exchange.manip.optimize_general`)
+        augment_diffuse : int
+            Add n diffuse functions by even-tempered extrapolation
+        augment_steep : int
+            Add n steep functions by even-tempered extrapolation
+        get_aux : int
+            Instead of the orbital basis, get an auxiliary basis
+            set. Options 0 (return orbital basis), 1 (return AutoAux
+            basis), 2 (return Auto-ABS Coulomb fitting basis)
+        data_dir : str
+            Data directory with all the basis set information. By default,
+            it is in the 'data' subdirectory of this project.
+        
+        Returns
+        -------
+        str or dict
+            The basis set in the desired format. If `fmt` is **None**, this will be a python
+            dictionary. Otherwise, it will be a string.
+    
+    get_basis_family(basis_name, data_dir=None)
+        Lookup a family by a basis set name
+    
+    get_data_dir()
+        Get the default data directory of this installation
+    
+    get_formats(function_types=None)
+        Return information about the basis set formats available
+        
+        The returned data is a map of format to display name. The format
+        can be passed as the fmt argument to :func:`get_basis()`
+        
+        If a list is specified for function_types, only those formats
+        supporting the given function types will be returned.
+    
+    get_reference_formats()
+        Return information about the reference/citation formats available
+        
+        The returned data is a map of format to display name. The format
+        can be passed as the fmt argument to :func:`get_references`
+    
+    get_references(basis_name, elements=None, version=None, fmt=None, data_dir=None)
+        Get the references/citations for a basis set
+        
+        Parameters
+        ----------
+        basis_name : str
+            Name of the basis set. This is not case sensitive.
+        elements : list
+            List of element numbers that you want the basis set for. By default,
+            all elements for which the basis set is defined are included.
+        version : int
+            Obtain a specific version of this basis set. By default,
+            the latest version is returned.
+        fmt: str
+            The desired output format of the basis set references. By default,
+            basis set information is returned as a list of dictionaries. Use
+            get_reference_formats() to programmatically obtain the available formats.
+            The `fmt` argument is not case sensitive.
+        
+            Available reference formats are
+        
+                * bib
+                * txt
+                * json
+        
+        data_dir : str
+            Data directory with all the basis set information. By default,
+            it is in the 'data' subdirectory of this project.
+        
+        Returns
+        -------
+        str or dict
+            The references for the given basis set in the desired format. If `fmt` is **None**, this will be a python
+            dictionary. Otherwise, it will be a string.
+    
+    get_roles()
+        Return information about the available basis set roles available
+        
+        The returned data is a map of role to display name. The format
+        can be passed as the role argument to fmt argument to :func:`lookup_basis_by_role`
+    
+    lookup_basis_by_role(primary_basis, role, data_dir=None)
+        Lookup the name of an auxiliary basis set given a primary basis set and role
+        
+        Parameters
+        ----------
+        primary_basis : str
+            The primary (orbital) basis set that we want the auxiliary
+            basis set for. This is not case sensitive.
+        role: str
+            Desired role/type of auxiliary basis set.
+            Use :func:`get_roles` to programmatically obtain the available
+            roles.  The `role` argument is not case sensitive.
+        
+            Available roles are
+        
+                * jfit
+                * jkfit
+                * rifit
+                * optri
+                * admmfit
+                * dftxfit
+                * dftjfit
+                * guess
+        
+        data_dir : str
+            Data directory with all the basis set information. By default,
+            it is in the 'data' subdirectory of this project.
+        
+        Returns
+        -------
+        str
+            The name of the auxiliary basis set for the given primary basis
+            and role.
+    
+    version()
+        Obtain the version of the basis set exchange library (as a string)
+
+DATA
+    get_basis_notes = <basis_set_exchange.memo.BSEMemoize object>
+    get_families = <basis_set_exchange.memo.BSEMemoize object>
+    get_family_notes = <basis_set_exchange.memo.BSEMemoize object>
+    get_metadata = <basis_set_exchange.memo.BSEMemoize object>
+    get_reference_data = <basis_set_exchange.memo.BSEMemoize object>
+    has_basis_notes = <basis_set_exchange.memo.BSEMemoize object>
+    has_family_notes = <basis_set_exchange.memo.BSEMemoize object>
+
+VERSION
+    v0.9
